@@ -3,7 +3,6 @@ import LetterKeys from './LetterKeys'
 
 const Keys = ({tries,nletter,letters}) => {
 
-  console.log(nletter);
 
   return (
     <div className="letter">

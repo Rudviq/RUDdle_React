@@ -1,42 +1,119 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Game from './Game';
 import Keyboard from './Keyboard';
 
 
-const Main = () => {
+const Main = (props) => {
 
-  const [letters,setLetters] = useState(Array(5).fill(''));
+  const [letters,setLetters] = useState(Array(6).fill('').map(() => Array(5).fill('')));
   const [tries,setTries] = useState(0);
-  const [nletter,setNletter] = useState(0);
+  const [actualWord,setActualWords] = useState(null);
 
-  // const handleKeyPress = event =>{
-  //   const key = event.target.dataset.key;
-  //   setLetter(key);
-  // }
+  useEffect(() => {
+      const fetchData = async () => {
+          try {
+            const path = "words.txt";
+              const response = await fetch(path);
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              const textContent = await response.text();
+              const words = textContent.split(/\s+/);
+              const randomIndex = Math.floor(Math.random() * words.length);
+              const randomWord = words[randomIndex].toUpperCase();
+              console.log(randomWord);
+              setActualWords(randomWord);
+          } catch (error) {
+              console.error('Error:', error);
+          }
+      };
+
+      fetchData();
+  }, []);
 
   const handleKeyPress = (letter) => {
     const updatedLetters = [...letters];
-    const index = updatedLetters.findIndex((l) => l === '');
+    const index = updatedLetters[tries].findIndex((l) => l === '');
     if (index !== -1) {
-      updatedLetters[index] = letter.target.dataset.key;
-      console.log(letter.target.dataset.key);
+      updatedLetters[tries][index] = letter.key;
+      console.log(letter.key);
       setLetters(updatedLetters);
       
     }
   };
 
+  const handleEnterPress=()=>{
+    const updatedLetters = [...letters];
+    // const index = updatedLetters.findIndex((l) => l === '');
+    if(updatedLetters[tries][4]){
+        const guessedWord = updatedLetters[tries].join('').toUpperCase();
+        
+        if(guessedWord===actualWord){
+          console.log("You have guessed the right Word");
+          // setWinStatus(true);
+          // setIsPlaying(false);
+          props.setIsPlaying(false);
+          props.setWinStatus(true);
+        }
+        else{
+          // setLetters(Array(5).fill(''));
+          {tries<5 && setTries(tries+1)}
+          if(tries===5){
+            // setWinStatus(false);
+            // setIsPlaying(false);
+            props.setIsPlaying(false);
+            props.setWinStatus(false);
+          }
+        } 
+    }
+  }
+
+  const handleDelPress=()=>{
+    const updatedLetters = [...letters];
+    const index = updatedLetters[tries].findIndex((l) => l === '');
+    if(updatedLetters[tries][4] ){
+      updatedLetters[tries][4] = '';
+      setLetters(updatedLetters);
+    }
+    else{
+      updatedLetters[tries][index-1] = '';
+      setLetters(updatedLetters);
+    }
+  }
+
+      const handledecideKeyPress = (event) => {
+        if (event.keyCode === 13) {
+            handleEnterPress();
+        } else if (event.keyCode === 8) {
+            handleDelPress();
+        } else if (event.keyCode >= 65 && event.keyCode <= 90) {
+            handleKeyPress(event);
+        }
+    };
+      useEffect(() => {
+        const handleKeyDown = (event) => {
+            handledecideKeyPress(event);
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    });
+
   return (
     <main className ="main">
         
         {/* <Game letter= {letter} tries={tries} nletter={nletter}></Game>*/}
-        <Game letters={letters} tries={tries}></Game>
-        <Keyboard handleKeyPress={handleKeyPress}></Keyboard>
+        <Game letters={letters} ></Game>
+        <Keyboard handleKeyPress={handleKeyPress} handleEnterPress={handleEnterPress} handleDelPress={handleDelPress}></Keyboard>
         
     </main>
   )
 }
 
-export default Main
+export default Main;
 
 // import React, { useState, useEffect } from 'react';
 

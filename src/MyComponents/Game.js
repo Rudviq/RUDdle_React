@@ -1,19 +1,18 @@
 import React from 'react'
 import Tries from './Tries'
 
-const Game = ({letters,tries}) => {
+const Game = ({letters}) => {
  
   const renderTags = () => {
     const tags = [];
-    console.log(letters);
     for (let i = 0; i < 6; i++) {
-      if(i===tries){
+      // if(i===tries){
         
-        tags.push(<Tries key={i} index={i} letters ={letters}/>);
-      }
-      else{
-        tags.push(<Tries key={i} index={i} letters={''}/>);
-      }
+        tags.push(<Tries key={i} index={i} letters ={letters[i]}/>);
+      // }
+      // else{
+      //   tags.push(<Tries key={i} index={i} letters={''}/>);
+      // }
     }
     return tags;
   };
