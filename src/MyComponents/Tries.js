@@ -1,12 +1,17 @@
 import React from 'react'
 import Keys from './Keys'
 
-const Tries = () => {
-
+const Tries = ({index,letters}) => {
+  
   const renderTags = () => {
     const tags = [];
     for (let i = 0; i < 5; i++) {
-      tags.push(<MyTag key={i} />);
+      if(letters[i]){
+        tags.push(<Keys key={i} tries={index} nletter = {i} letters={letters}/>);
+      }
+      else{
+        tags.push(<Keys key={i} tries={index} letters={letters}/>);
+      }
     }
     return tags;
   };
@@ -18,10 +23,10 @@ const Tries = () => {
   )
 }
 
-function MyTag() {
-  return (
-    <Keys></Keys>
-  )
-}
+// function MyTag() {
+//   return (
+//     <Keys></Keys>
+//   )
+// }
 
 export default Tries

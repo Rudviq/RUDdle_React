@@ -1,11 +1,15 @@
 import React from 'react'
 import LetterKeys from './LetterKeys'
 
-const Keys = () => {
+const Keys = ({tries,nletter,letters}) => {
+
+  console.log(nletter);
+
   return (
     <div className="letter">
-      <LetterKeys></LetterKeys>
+      <LetterKeys letters={letters} nletter={nletter}></LetterKeys>
     </div>
+    
   )
 }
 

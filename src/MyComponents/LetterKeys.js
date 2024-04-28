@@ -1,9 +1,10 @@
 import React from 'react'
 
-const LetterKeys = () => {
+const LetterKeys = ({letters,nletter}) => {
+  
+  
   return (
-    <div className="letter-keys">
-    
+    <div className="letter-keys" >{letters[nletter]}
     </div>
   )
 }

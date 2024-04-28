@@ -1,12 +1,19 @@
 import React from 'react'
 import Tries from './Tries'
 
-const Game = () => {
+const Game = ({letters,tries}) => {
  
   const renderTags = () => {
     const tags = [];
+    console.log(letters);
     for (let i = 0; i < 6; i++) {
-      tags.push(<MyTag key={i} />);
+      if(i===tries){
+        
+        tags.push(<Tries key={i} index={i} letters ={letters}/>);
+      }
+      else{
+        tags.push(<Tries key={i} index={i} letters={''}/>);
+      }
     }
     return tags;
   };
@@ -19,10 +26,5 @@ const Game = () => {
     </div>);
 }
 
-function MyTag() {
-  return (
-    <Tries></Tries>
-  )
-}
 
 export default Game

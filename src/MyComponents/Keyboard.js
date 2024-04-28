@@ -1,10 +1,10 @@
 import React from 'react';
 import KeyboardRow from './KeyboardRow';
 
-const Keyboard = () => {
+const Keyboard = (props) => {
   return (
     <div className='keyboard'>
-      <KeyboardRow></KeyboardRow>
+      <KeyboardRow handleKeyPress = {props.handleKeyPress}></KeyboardRow>
     </div>
   )
 }
