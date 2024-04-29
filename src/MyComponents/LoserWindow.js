@@ -1,13 +1,14 @@
 import React from 'react';
 import '../App.css';
 
-const Loser = () => {
+const Loser = (props) => {
   return (
     <div className = "announce" >
-      <img src="./lose.png" style={{height:`500px`}}/>
+      <img src="./lose.png" style={{height:`400px`}} alt='Looser'/>
+      <h4 id="actualWordsDisplay">{props.actualWord}</h4>
       <h4>Better Luck next time !</h4>
 
-      <h5 id="actualWordsDisplay"></h5>
+      
   </div>
     
   )
