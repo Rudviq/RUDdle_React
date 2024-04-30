@@ -33,6 +33,7 @@ const Main = (props) => {
       fetchData();
   }, []);
 
+ 
   const generateColors = (guessedWord, actualArray) => {
    
     const newColor = [...color];
@@ -51,6 +52,7 @@ const Main = (props) => {
 
     setColor(newColor);
     console.log(color);
+    // updateKeyboardBackground(color);
     if (newColor[tries].every((c) => c === 'G')) {
       // All letters are guessed correctly
       // Handle winning logic here
@@ -58,20 +60,6 @@ const Main = (props) => {
     }
   };
 
-  // const updateKeyboardBackground = (letterKeys) => {
-  //   letterKeys.forEach((keyElement, index) => {
-  //     const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
-  //     if (color[index] === 'G') {
-  //       keyElement.style.background = '#227526';
-  //     } else if (color[index] === 'Y') {
-  //       if (backgroundColor !== 'rgb(34, 117, 38)') {
-  //         keyElement.style.background = '#8C8818';
-  //       }
-  //     } else if (color[index] === 'B') {
-  //       keyElement.style.background = '#252525';
-  //     }
-  //   });
-  // };
 
   const handleKeyPress = (letter) => {
     const updatedLetters = [...letters];
@@ -139,10 +127,10 @@ const Main = (props) => {
         handledecideKeyPress(event);
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-        document.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keydown', handleKeyDown);
     };
   });
 
@@ -151,7 +139,7 @@ const Main = (props) => {
         
         {/* <Game letter= {letter} tries={tries} nletter={nletter}></Game>*/}
         <Game letters={letters} color={color}></Game>
-        <Keyboard handleKeyPress={handleKeyPress} handleEnterPress={handleEnterPress} handleDelPress={handleDelPress}></Keyboard>
+        <Keyboard handleKeyPress={handleKeyPress} handleEnterPress={handleEnterPress} handleDelPress={handleDelPress} letters={letters} color={color}/>
         
     </main>
   )

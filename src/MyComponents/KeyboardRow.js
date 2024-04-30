@@ -1,46 +1,101 @@
 import React from 'react'
+import { useEffect,useState } from 'react'
 
-const KeyboardRow = ({handleKeyPress,handleEnterPress,handleDelPress}) => {
+const KeyboardRow = ({handleKeyPress,handleEnterPress,handleDelPress,letters,color}) => {
   
+
+  const [buttonStyles, setButtonStyles] = useState({});
+
+  const keys = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+  const keys2=[ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+  const keys3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+  useEffect(() => {
+    const newButtonStyles = {};
+    letters.forEach((letterRow,row) => {
+      letterRow.forEach((word,index) => {
+        word = word.toUpperCase();
+        if(word){
+            let bgColor = '';
+            if( color[row][index]==='G'){
+              // getButtonStyle(word,'#227526');
+              bgColor = '#227526';
+            }
+            else if(color[row][index] === 'Y'){
+              // getButtonStyle(word,'#8C8818');
+              if(newButtonStyles[word] && newButtonStyles[word].backgroundColor != "#227526"){
+                bgColor = '#8C8818';
+              }
+              else if(!newButtonStyles[word]){
+                bgColor = '#8C8818';
+              }
+              else if(newButtonStyles[word] && newButtonStyles[word].backgroundColor === "#227526"){
+                bgColor = '#227526';
+              }
+            }
+            else if(color[row][index] === 'B'){
+              // getButtonStyle(word,'#252525');
+              bgColor = '#252525';
+            }
+            newButtonStyles[word] = { backgroundColor: bgColor };
+            console.log("Rudviq Bahvsar",word," ",newButtonStyles[word].backgroundColor);
+          }
+          
+      });
+    });
+    setButtonStyles(newButtonStyles);
+  },[color]);
+  
+
   return (
       <>
-    <div className='keyboard-row'>
-        <button type="button" className="keys" data-key="Q" onClick={(e)=>handleKeyPress(e.target.dataset)}>Q</button>
-        <button type="button" className="keys" data-key="W" onClick={(e)=>handleKeyPress(e.target.dataset)}>W</button>
-        <button type="button" className="keys" data-key="E" onClick={(e)=>handleKeyPress(e.target.dataset)}>E</button>
-        <button type="button" className="keys" data-key="R" onClick={(e)=>handleKeyPress(e.target.dataset)}>R</button>
-        <button type="button" className="keys" data-key="T" onClick={(e)=>handleKeyPress(e.target.dataset)}>T</button>
-        <button type="button" className="keys" data-key="Y" onClick={(e)=>handleKeyPress(e.target.dataset)}>Y</button>
-        <button type="button" className="keys" data-key="U" onClick={(e)=>handleKeyPress(e.target.dataset)}>U</button>
-        <button type="button" className="keys" data-key="I" onClick={(e)=>handleKeyPress(e.target.dataset)}>I</button>
-        <button type="button" className="keys" data-key="O" onClick={(e)=>handleKeyPress(e.target.dataset)}>O</button>
-        <button type="button" className="keys" data-key="P" onClick={(e)=>handleKeyPress(e.target.dataset)}>P</button>
-    </div>
-    <div className="keyboard-row">
-        <div data-testid="spacer" className="space"></div>
-        <button type="button" className="keys" data-key="A" onClick={(e)=>handleKeyPress(e.target.dataset)}>A</button>
-        <button type="button" className="keys" data-key="S" onClick={(e)=>handleKeyPress(e.target.dataset)}>S</button>
-        <button type="button" className="keys" data-key="D" onClick={(e)=>handleKeyPress(e.target.dataset)}>D</button>
-        <button type="button" className="keys" data-key="F" onClick={(e)=>handleKeyPress(e.target.dataset)}>F</button>
-        <button type="button" className="keys" data-key="G" onClick={(e)=>handleKeyPress(e.target.dataset)}>G</button>
-        <button type="button" className="keys" data-key="H" onClick={(e)=>handleKeyPress(e.target.dataset)}>H</button>
-        <button type="button" className="keys" data-key="J" onClick={(e)=>handleKeyPress(e.target.dataset)}>J</button>
-        <button type="button" className="keys" data-key="K" onClick={(e)=>handleKeyPress(e.target.dataset)}>K</button>
-        <button type="button" className="keys" data-key="L" onClick={(e)=>handleKeyPress(e.target.dataset)}>L</button>
-        <div data-testid="spacer" className="space"></div>
-    </div>
-    <div className="keyboard-row">
-        <button type="button" className="keys" onClick={handleEnterPress} style={{fontSize: '12px'}}>ENTER</button>
-        <button type="button" className="keys" data-key="Z" onClick={(e)=>handleKeyPress(e.target.dataset)}>Z</button>
-        <button type="button" className="keys"data-key="X" onClick={(e)=>handleKeyPress(e.target.dataset)}>X</button>
-        <button type="button" className="keys" data-key="C" onClick={(e)=>handleKeyPress(e.target.dataset)}>C</button>
-        <button type="button" className="keys" data-key="V" onClick={(e)=>handleKeyPress(e.target.dataset)}>V</button>
-        <button type="button" className="keys" data-key="B" onClick={(e)=>handleKeyPress(e.target.dataset)}>B</button>
-        <button type="button" className="keys" data-key="N" onClick={(e)=>handleKeyPress(e.target.dataset)}>N</button>
-        <button type="button" className="keys" data-key="M" onClick={(e)=>handleKeyPress(e.target.dataset)}>M</button>
-        <button type="button" className="keys" onClick={handleDelPress} style={{fontSize: '12px'}}>DEL</button>
-        
-    </div>
+    
+        <div className='keyboard-row'>
+            {keys.map((key) => (
+              <button
+                key={key}
+                type="button"
+                className="keys"
+                data-key={key}
+                onClick={(e)=>handleKeyPress(e.target.dataset)} 
+                style={buttonStyles[key]}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
+        <div className="keyboard-row">
+            <div data-testid="spacer" className="space"></div>
+            {keys2.map((key) => (
+              <button
+                key={key}
+                type="button"
+                className="keys"
+                data-key={key}
+                onClick={(e)=>handleKeyPress(e.target.dataset)} 
+                style={buttonStyles[key]}
+              >
+                {key}
+              </button>
+            ))}
+            <div data-testid="spacer" className="space"></div>
+        </div>
+        <div className="keyboard-row">
+            <button type="button" className="keys" onClick={handleEnterPress} style={{fontSize: '12px'}}>ENTER</button>
+            {keys3.map((key) => (
+              <button
+                key={key}
+                type="button"
+                className="keys"
+                data-key={key}
+                onClick={(e)=>handleKeyPress(e.target.dataset)} 
+                style={buttonStyles[key]}
+              >
+                {key}
+              </button>
+            ))}
+            <button type="button" className="keys" onClick={handleDelPress} style={{fontSize: '12px'}}>DEL</button>
+            
+        </div>
     </>
   )
 }
