@@ -1,6 +1,6 @@
 <<<<<<< HEAD
 # RUDdle_React
-RUDdle game changed to React JS 
+RUDdle game - Game developed inspired by WORDLE
 =======
 # Getting Started with Create React App
 
