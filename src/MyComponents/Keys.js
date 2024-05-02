@@ -1,7 +1,7 @@
 import React from 'react'
 import LetterKeys from './LetterKeys'
 
-const Keys = ({tries,nletter,letters,c}) => {
+const Keys = ({nletter,letters,c}) => {
 
 
   return (
