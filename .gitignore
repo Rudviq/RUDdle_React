@@ -10,6 +10,7 @@
 
 # production
 /build
+/RUDdle_React
 
 # misc
 .DS_Store
