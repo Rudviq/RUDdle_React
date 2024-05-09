@@ -1,5 +1,6 @@
 [![ruddle](https://github.com/Rudviq/RUDdle_React/assets/60641746/8009e413-001b-4c6f-a77c-4f524a0b1e21)](https://ruddle.netlify.app/)
-Clikc above to begin playing the game
+
+Click above to begin playing the game
 
 # RUDdle - A Word Guessing Game
 RUDdle is a word guessing game inspired by the popular game Wordle. In RUDdle, players have 6 tries to guess a 5-letter word. Each guess is represented by a color code indicating the correctness of the guessed letters.
