@@ -1,75 +1,40 @@
-<<<<<<< HEAD
-# RUDdle_React
-RUDdle game - Game developed inspired by WORDLE
-=======
-# Getting Started with Create React App
+![ruddle](https://github.com/Rudviq/RUDdle_React/assets/60641746/8009e413-001b-4c6f-a77c-4f524a0b1e21)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# RUDdle - A Word Guessing Game
+RUDdle is a word guessing game inspired by the popular game Wordle. In RUDdle, players have 6 tries to guess a 5-letter word. Each guess is represented by a color code indicating the correctness of the guessed letters.
 
-## Available Scripts
+## How to Play
+**Objective**: Guess the secret 5-letter word within 6 tries.
 
-In the project directory, you can run:
+**Guessing**: Enter a 5-letter word into the input field.
 
-### `npm start`
+**Color Codes**:
+- Green: Letter present in the correct position in the secret word.
+- Yellow: Letter present in the secret word but in a different position.
+- Grey: Letter not present in the secret word.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Feedback**: Use the color codes to adjust your guesses in subsequent attempts.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Winning**: Guess the correct word within 6 tries to win the game.
 
-### `npm test`
+## Technologies Used
+- React JS
+- JSX
+- JavaScript
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
+**Installation**: Clone the repository to your local machine.
 
-### `npm run build`
+**Setup**: Run npm install to install dependencies.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Run**: Start the game by running npm start.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Play**: Access the game in your web browser and start guessing!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Demo
 
-### `npm run eject`
+## Contributing
+Contributions are welcome! Feel free to submit pull requests or raise issues for any improvements or features you'd like to see in RUDdle.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> master
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
