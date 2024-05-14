@@ -22,7 +22,7 @@ const KeyboardRow = ({handleKeyPress,handleEnterPress,handleDelPress,letters,col
             }
             else if(color[row][index] === 'Y'){
               // getButtonStyle(word,'#8C8818');
-              if(newButtonStyles[word] && newButtonStyles[word].backgroundColor != "#227526"){
+              if(newButtonStyles[word] && newButtonStyles[word].backgroundColor != "#227526" && newButtonStyles[word].backgroundColor != "#1c2e4a" ){
                 bgColor = '#8C8818';
               }
               else if(!newButtonStyles[word]){
@@ -31,10 +31,16 @@ const KeyboardRow = ({handleKeyPress,handleEnterPress,handleDelPress,letters,col
               else if(newButtonStyles[word] && newButtonStyles[word].backgroundColor === "#227526"){
                 bgColor = '#227526';
               }
+              else if(newButtonStyles[word] && newButtonStyles[word].backgroundColor === "#1c2e4a"){
+                bgColor = '#1c2e4a';
+              }
             }
             else if(color[row][index] === 'B'){
               // getButtonStyle(word,'#252525');
               bgColor = '#252525';
+            }
+            else if(color[row][index] === 'D'){
+              bgColor = '#1c2e4a';
             }
             newButtonStyles[word] = { backgroundColor: bgColor };
             console.log("Rudviq Bahvsar",word," ",newButtonStyles[word].backgroundColor);

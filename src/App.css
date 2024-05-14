@@ -329,3 +329,41 @@ body{
       max-height: 50%;
   }
 }
+
+.notification {
+  position: fixed;
+  top: 60px; /* Adjust top position as needed */
+  left: 50%; /* Adjust left position to center horizontally */
+  margin-left: -100px;
+  transform: translate(-50%, -50%);
+  background-color: #cf463d; /* Red color for error */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 999; /* Higher z-index to ensure it appears above other elements */
+  /* animation: vibration 0.1s linear infinite; Add rapid vibration animation */
+  animation: vibration 0.2s linear infinite alternate, fadeOut 2s ease-in-out;
+}
+.message {
+  display: inline-block; /* Ensure text wraps correctly */
+}
+@keyframes vibration {
+  0% {
+    transform: translate(-5px, -50%); /* Move left */
+  }
+  100% {
+    transform: translate(5px, -50%); /* Move right */
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1; /* Start with full opacity */
+  }
+  90% {
+    opacity: 1; /* Maintain full opacity for most of the time */
+  }
+  100% {
+    opacity: 0; /* Fade out completely */
+  }
+}

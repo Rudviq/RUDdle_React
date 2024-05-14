@@ -7,41 +7,79 @@ const Main = (props) => {
 
   const [letters,setLetters] = useState(Array(6).fill('').map(() => Array(5).fill('')));
   const [tries,setTries] = useState(0);
-  const [actualWord,setActualWord] = useState(null);
   const [color, setColor] = useState(Array(6).fill('W').map(() => Array(5).fill('W')));
+  const [duplicate, setDuplicate] = useState(null);
+  const [wordExist,setWordExist] = useState(1);
 
-  useEffect(() => {
-      const fetchData = async () => {
-          try {
-            const path = "words.txt";
-              const response = await fetch(path);
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              const textContent = await response.text();
-              const words = textContent.split(/\s+/);
-              const randomIndex = Math.floor(Math.random() * words.length);
-              const randomWord = words[randomIndex].toUpperCase();
-              console.log(randomWord);
-              props.setActualWords(randomWord);
-              setActualWord(randomWord);
-          } catch (error) {
-              console.error('Error:', error);
-          }
-      };
-      
-      fetchData();
-  }, []);
+
+  const checkDictionary = async (guessedWord) => {
+    try{
+      const path = "demo.csv";
+      const response = await fetch(path);
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      const textContent = await response.text();
+
+      const lines = textContent.split("\n"); // Split text content by line breaks
+      const words = lines.map(line => {
+          const columns = line.split(","); // Split each line by commas
+          return columns[0].trim().toUpperCase(); // Extract the value from the first column (A column)
+      }).filter(word => word !== ""); // Filter out any empty words
+
+      //Check if user entered correct word that exists or not
+      if(words.includes(guessedWord)){
+        setWordExist(1);
+        return 'Yes';
+      }
+      else{
+        setWordExist(0);
+        return 'No';
+      }
+    }
+    catch(error){
+      console.error('Error:', error);
+    }
+  };
+
+  const findDuplicateLetters = (word) => {
+    // Create an empty object to store letter counts
+    const letterCount = {};
+    console.log(word);
+    // const letters = word.split('');
+
+    // Iterate through each letter in the word
+    for (const letter of word) {
+      // Increment the count of the letter in the object
+      letterCount[letter] = (letterCount[letter] || 0) + 1;
+    }
+
+    // Filter letters with counts greater than 1
+    const duplicates = Object.keys(letterCount).filter(
+      (letter) => letterCount[letter] > 1
+    );
+
+    return duplicates;
+    
+  };
 
  
   const generateColors = (guessedWord, actualArray) => {
    
     const newColor = [...color];
-
+    console.log(guessedWord, actualArray);
+    // console.log(duplicate);
     for (let k = 0; k < 5; k++) {
       if (actualArray.includes(guessedWord[k])) {
         if (actualArray[k] === guessedWord[k]) {
-          newColor[tries][k] = 'G';
+          // newColor[tries][k] = 'G';
+          // if len of duplcate is more than 0 and the letter is in duplicate then assisng blue else green
+          if(duplicate.length>0 && duplicate.includes(guessedWord[k])){
+            newColor[tries][k] = 'D';
+          }
+          else{
+            newColor[tries][k] = 'G';
+          }
         } else {
           newColor[tries][k] = 'Y';
         }
@@ -72,14 +110,18 @@ const Main = (props) => {
     }
   };
 
-  const handleEnterPress=()=>{
+
+  const handleEnterPress= ()=>{
     const updatedLetters = [...letters];
+    
     // const index = updatedLetters.findIndex((l) => l === '');
     if(updatedLetters[tries][4]){
         
         const guessedWord = updatedLetters[tries].join('').toUpperCase();
-        generateColors(guessedWord,actualWord);
-        if(guessedWord===actualWord){
+       
+
+        //If word guessed is correct declare user as WINNER
+        if(guessedWord===props.actualWord){
           console.log("You have guessed the right Word");
           // setWinStatus(true);
           // setIsPlaying(false);
@@ -87,15 +129,36 @@ const Main = (props) => {
           props.setWinStatus(true);
         }
         else{
-          // setLetters(Array(5).fill(''));
-          {tries<5 && setTries(tries+1)}
-          if(tries===5){
-            // setWinStatus(false);
-            // setIsPlaying(false);
-            props.setIsPlaying(false);
-            props.setWinStatus(false);
-          }
+         
+        
+          checkDictionary(guessedWord)
+          .then(existenc => {
+            console.log(existenc);
+            if (existenc === "Yes") {
+                generateColors(guessedWord, props.actualWord);
+                if (tries < 5) {
+                    setTries(tries + 1);
+                }
+                if (tries === 5) {
+                    props.setIsPlaying(false);
+                    props.setWinStatus(false);
+                }
+            } else {
+                setShowNotification(true);
+                setTimeout(() => {
+                  setShowNotification(false);
+                }, 2500); // Hide the notification after 2 seconds
+                console.log('Word does not exist in the dictionary');
+                updatedLetters[tries] = Array(5).fill('');
+                setLetters(updatedLetters);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+       
         } 
+        
     }
   }
 
@@ -132,11 +195,37 @@ const Main = (props) => {
     return () => {
         window.removeEventListener('keydown', handleKeyDown);
     };
+    
   });
+
+  useEffect(() => {
+    // Call the function to find duplicate letters
+    if (props.actualWord) {
+        const duplicates = findDuplicateLetters(props.actualWord);
+        setDuplicate(duplicates);
+        console.log(duplicate);
+    }
+}, [props.actualWord]);
+
+useEffect(() => {
+
+      console.log(duplicate);
+
+}, [duplicate]);
+
+const [showNotification, setShowNotification] = useState(false);
+useEffect(() => {
+  if (showNotification) {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000); // Hide the notification after 2 seconds
+    return () => clearTimeout(timer);
+  }
+}, [showNotification]);
 
   return (
     <main className ="main">
-        
+        {showNotification && <div className="notification"><span className="message">The word does not exists</span></div>}
         {/* <Game letter= {letter} tries={tries} nletter={nletter}></Game>*/}
         <Game letters={letters} color={color}></Game>
         <Keyboard handleKeyPress={handleKeyPress} handleEnterPress={handleEnterPress} handleDelPress={handleDelPress} letters={letters} color={color}/>
@@ -147,145 +236,3 @@ const Main = (props) => {
 
 export default Main;
 
-
-// import React, { useState, useEffect } from 'react';
-
-// const Main = () => {
-//     const [actualWords, setActualWords] = useState('');
-//     const [playing, setPlaying] = useState(true);
-//     const [currentWordIndex, setCurrentWordIndex] = useState(0);
-//     const [guessedWord, setGuessedWord] = useState('');
-//     const [keyboardState, setKeyboardState] = useState(Array(26).fill(''));
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const response = await fetch('words.txt');
-//                 if (!response.ok) {
-//                     throw new Error('Network response was not ok');
-//                 }
-//                 const textContent = await response.text();
-//                 const words = textContent.split(/\s+/);
-//                 const randomIndex = Math.floor(Math.random() * words.length);
-//                 const randomWord = words[randomIndex].toUpperCase();
-//                 setActualWords(randomWord);
-//             } catch (error) {
-//                 console.error('Error:', error);
-//             }
-//         };
-
-//         fetchData();
-//     }, []);
-
-//     const handleLetterClick = (index) => {
-//         if (playing && guessedWord.length < actualWords.length) {
-//             const letter = String.fromCharCode(65 + index);
-//             setGuessedWord(guessedWord + letter);
-//         }
-//     };
-
-//     const handleBackspace = () => {
-//         if (playing && guessedWord.length > 0) {
-//             setGuessedWord(guessedWord.slice(0, -1));
-//         }
-//     };
-
-//     const handleEnterKeyPress = () => {
-//         if (playing && guessedWord.length === actualWords.length) {
-//             setPlaying(false);
-//             // Perform actions for winning the game
-//         }
-//     };
-
-//     const handleKeyPress = (event) => {
-//         if (event.keyCode === 13) {
-//             handleEnterKeyPress();
-//         } else if (event.keyCode === 8) {
-//             handleBackspace();
-//         } else if (event.keyCode >= 65 && event.keyCode <= 90) {
-//             handleLetterClick(event.keyCode - 65);
-//         }
-//     };
-
-//     useEffect(() => {
-//         const handleKeyDown = (event) => {
-//             handleKeyPress(event);
-//         };
-
-//         document.addEventListener('keydown', handleKeyDown);
-
-//         return () => {
-//             document.removeEventListener('keydown', handleKeyDown);
-//         };
-//     });
-
-
-
-//     return (
-//         <main className="main">
-//             <div className="container" style={{ overflow: 'unset' }}>
-//                 <div className="game">
-//                     {[...Array(6)].map((_, index) => (
-//                         <div key={index} className="game-container">
-//                             {[...Array(5)].map((_, letterIndex) => (
-//                                 <div key={letterIndex} className="letter">
-//                                     <div className="letter-keys">
-//                                         {guessedWord[5 * index + letterIndex]}
-//                                     </div>
-//                                 </div>
-//                             ))}
-//                         </div>
-//                     ))}
-//                 </div>
-//             </div>
-//             <div className="keyboard">
-//                 <div className="keyboard-row">
-//                     {[...Array(10)].map((_, index) => (
-//                         <button
-//                             key={index}
-//                             type="button"
-//                             className="keys"
-//                             onClick={() => handleLetterClick(index)}
-//                             disabled={!playing || guessedWord.length >= actualWords.length}
-//                         >
-//                             {String.fromCharCode(65 + index)}
-//                         </button>
-//                     ))}
-//                 </div>
-//                 <div className="keyboard-row">
-//                     {[...Array(9)].map((_, index) => (
-//                         <button
-//                             key={index}
-//                             type="button"
-//                             className="keys"
-//                             onClick={() => handleLetterClick(index + 10)}
-//                             disabled={!playing || guessedWord.length >= actualWords.length}
-//                         >
-//                             {String.fromCharCode(75 + index)}
-//                         </button>
-//                     ))}
-//                     <button
-//                         type="button"
-//                         className="keys"
-//                         onClick={handleBackspace}
-//                         disabled={!playing || guessedWord.length === 0}
-//                     >
-//                         DEL
-//                     </button>
-//                 </div>
-//                 <div className="keyboard-row">
-//                     <button
-//                         type="button"
-//                         className="keys"
-//                         onClick={handleEnterKeyPress}
-//                         disabled={!playing || guessedWord.length !== actualWords.length}
-//                     >
-//                         ENTER
-//                     </button>
-//                 </div>
-//             </div>
-//         </main>
-//     );
-// };
-
-// export default Main;
