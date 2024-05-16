@@ -12,6 +12,7 @@ RUDdle is a word guessing game inspired by the popular game Wordle. In RUDdle, p
 
 **Color Codes**:
 - Green: Letter present in the correct position in the secret word.
+- Blue: Letter present in the correct position and occurs more than one time in the secret word.
 - Yellow: Letter present in the secret word but in a different position.
 - Grey: Letter not present in the secret word.
 
